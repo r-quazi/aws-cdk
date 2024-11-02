@@ -1,0 +1,1121 @@
+{
+ "Resources": {
+  "Ingress0D3F461F": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.1.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Resource"
+   }
+  },
+  "IngressPrivateSubnetSubnet1Subnet9DAC87FE": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "Ingress0D3F461F"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.1.0.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private-Subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet1/Subnet"
+   }
+  },
+  "IngressPrivateSubnetSubnet1RouteTable73E05D3E": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "Ingress0D3F461F"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet1/RouteTable"
+   }
+  },
+  "IngressPrivateSubnetSubnet1RouteTableAssociationD86C39C7": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "IngressPrivateSubnetSubnet1RouteTable73E05D3E"
+    },
+    "SubnetId": {
+     "Ref": "IngressPrivateSubnetSubnet1Subnet9DAC87FE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet1/RouteTableAssociation"
+   }
+  },
+  "IngressPrivateSubnetSubnet2Subnet78C16059": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "Ingress0D3F461F"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.1.1.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private-Subnet"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet2/Subnet"
+   }
+  },
+  "IngressPrivateSubnetSubnet2RouteTable11B065FA": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "Ingress0D3F461F"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet2/RouteTable"
+   }
+  },
+  "IngressPrivateSubnetSubnet2RouteTableAssociation4BCD031C": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "IngressPrivateSubnetSubnet2RouteTable11B065FA"
+    },
+    "SubnetId": {
+     "Ref": "IngressPrivateSubnetSubnet2Subnet78C16059"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Ingress/Private-SubnetSubnet2/RouteTableAssociation"
+   }
+  },
+  "DynamoDBVpce917F0723": {
+   "Type": "AWS::EC2::VPCEndpoint",
+   "Properties": {
+    "ServiceName": {
+     "Fn::Join": [
+      "",
+      [
+       "com.amazonaws.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".dynamodb"
+      ]
+     ]
+    },
+    "VpcId": {
+     "Ref": "Ingress0D3F461F"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:Delete*",
+        "dynamodb:DescribeStream",
+        "dynamodb:DescribeTable",
+        "dynamodb:Get*",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:Update*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "RouteTableIds": [
+     {
+      "Ref": "IngressPrivateSubnetSubnet1RouteTable73E05D3E"
+     },
+     {
+      "Ref": "IngressPrivateSubnetSubnet2RouteTable11B065FA"
+     }
+    ],
+    "VpcEndpointType": "Gateway"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/DynamoDBVpce/Resource"
+   }
+  },
+  "demotable002BE91A": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/demo_table/Resource"
+   }
+  },
+  "ApiHandlerServiceRole592E70E9": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "DependsOn": [
+    "IngressPrivateSubnetSubnet1RouteTableAssociationD86C39C7",
+    "IngressPrivateSubnetSubnet2RouteTableAssociation4BCD031C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/ApiHandler/ServiceRole/Resource"
+   }
+  },
+  "ApiHandlerServiceRoleDefaultPolicy10321D87": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchWriteItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "demotable002BE91A",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "demotable002BE91A",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiHandlerServiceRoleDefaultPolicy10321D87",
+    "Roles": [
+     {
+      "Ref": "ApiHandlerServiceRole592E70E9"
+     }
+    ]
+   },
+   "DependsOn": [
+    "IngressPrivateSubnetSubnet1RouteTableAssociationD86C39C7",
+    "IngressPrivateSubnetSubnet2RouteTableAssociation4BCD031C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/ApiHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiHandlerSecurityGroup1F0310F6": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatic security group for Lambda Function ApigwHttpApiLambdaDynamodbPythonCdkStackApiHandler494AE7CE",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Ingress0D3F461F"
+    }
+   },
+   "DependsOn": [
+    "IngressPrivateSubnetSubnet1RouteTableAssociationD86C39C7",
+    "IngressPrivateSubnetSubnet2RouteTableAssociation4BCD031C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/ApiHandler/SecurityGroup/Resource"
+   }
+  },
+  "ApiHandler5E7490E8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "6f55b3b134a566996b408121c9cea20757351b00322acc4b7f5927be9c30c79d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "ApiHandlerServiceRole592E70E9",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "demotable002BE91A"
+      }
+     }
+    },
+    "FunctionName": "apigw_handler",
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Runtime": "python3.9",
+    "Timeout": 300,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "ApiHandlerSecurityGroup1F0310F6",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "IngressPrivateSubnetSubnet1Subnet9DAC87FE"
+      },
+      {
+       "Ref": "IngressPrivateSubnetSubnet2Subnet78C16059"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "ApiHandlerServiceRoleDefaultPolicy10321D87",
+    "ApiHandlerServiceRole592E70E9",
+    "IngressPrivateSubnetSubnet1RouteTableAssociationD86C39C7",
+    "IngressPrivateSubnetSubnet2RouteTableAssociation4BCD031C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/ApiHandler/Resource",
+    "aws:asset:path": "asset.6f55b3b134a566996b408121c9cea20757351b00322acc4b7f5927be9c30c79d",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "EndpointEEF1FD8F": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "Endpoint"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Resource"
+   }
+  },
+  "EndpointDeployment318525DA05e97e652b0e0642501e4432f7d99aba": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "EndpointEEF1FD8F"
+    },
+    "Description": "Automatically created by the RestApi construct"
+   },
+   "DependsOn": [
+    "EndpointproxyANYC09721C5",
+    "Endpointproxy39E2174E",
+    "EndpointANY485C938B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Deployment/Resource"
+   }
+  },
+  "EndpointDeploymentStageprodB78BEEA0": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "EndpointEEF1FD8F"
+    },
+    "DeploymentId": {
+     "Ref": "EndpointDeployment318525DA05e97e652b0e0642501e4432f7d99aba"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/DeploymentStage.prod/Resource"
+   }
+  },
+  "Endpointproxy39E2174E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "EndpointEEF1FD8F",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "{proxy+}",
+    "RestApiId": {
+     "Ref": "EndpointEEF1FD8F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/{proxy+}/Resource"
+   }
+  },
+  "EndpointproxyANYApiPermissionApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457BANYproxy704D4F21": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiHandler5E7490E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "EndpointEEF1FD8F"
+       },
+       "/",
+       {
+        "Ref": "EndpointDeploymentStageprodB78BEEA0"
+       },
+       "/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/{proxy+}/ANY/ApiPermission.ApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457B.ANY..{proxy+}"
+   }
+  },
+  "EndpointproxyANYApiPermissionTestApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457BANYproxy9FBB3FBF": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiHandler5E7490E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "EndpointEEF1FD8F"
+       },
+       "/test-invoke-stage/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/{proxy+}/ANY/ApiPermission.Test.ApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457B.ANY..{proxy+}"
+   }
+  },
+  "EndpointproxyANYC09721C5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "ANY",
+    "ResourceId": {
+     "Ref": "Endpointproxy39E2174E"
+    },
+    "RestApiId": {
+     "Ref": "EndpointEEF1FD8F"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ApiHandler5E7490E8",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/{proxy+}/ANY/Resource"
+   }
+  },
+  "EndpointANYApiPermissionApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457BANYF0F6FDF2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiHandler5E7490E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "EndpointEEF1FD8F"
+       },
+       "/",
+       {
+        "Ref": "EndpointDeploymentStageprodB78BEEA0"
+       },
+       "/*/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/ANY/ApiPermission.ApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457B.ANY.."
+   }
+  },
+  "EndpointANYApiPermissionTestApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457BANY508115E5": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ApiHandler5E7490E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "EndpointEEF1FD8F"
+       },
+       "/test-invoke-stage/*/"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/ANY/ApiPermission.Test.ApigwHttpApiLambdaDynamodbPythonCdkStackEndpoint6800457B.ANY.."
+   }
+  },
+  "EndpointANY485C938B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "ANY",
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "EndpointEEF1FD8F",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "EndpointEEF1FD8F"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ApiHandler5E7490E8",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/Endpoint/Default/ANY/Resource"
+   }
+  },
+  "StateMachineRoleB840431D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "states.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/StateMachine/Role/Resource"
+   }
+  },
+  "StateMachineRoleDefaultPolicyDF1E6607": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ApiHandler5E7490E8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ApiHandler5E7490E8",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StateMachineRoleDefaultPolicyDF1E6607",
+    "Roles": [
+     {
+      "Ref": "StateMachineRoleB840431D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/StateMachine/Role/DefaultPolicy/Resource"
+   }
+  },
+  "StateMachine2E01A3A5": {
+   "Type": "AWS::StepFunctions::StateMachine",
+   "Properties": {
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "StateMachineRoleB840431D",
+      "Arn"
+     ]
+    },
+    "DefinitionString": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"StartAt\":\"Invoke Lambda\",\"States\":{\"Invoke Lambda\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"OutputPath\":\"$.Payload\",\"Resource\":\"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+       {
+        "Fn::GetAtt": [
+         "ApiHandler5E7490E8",
+         "Arn"
+        ]
+       },
+       "\",\"Payload\":{\"year\":2024,\"title\":\" some data here which is title \",\"id\":\" anotehr data here which is id\"}}}},\"TimeoutSeconds\":300}"
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "StateMachineRoleDefaultPolicyDF1E6607",
+    "StateMachineRoleB840431D"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/StateMachine/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VRXU/DMAz8LXvPAmwSex7lQ0hMVB3a6+Sm3mbaJlHtMKqq/x013RdPPp+cu7Mz04uFvp/AkaemKKcV5bpbC5hSwZG3HZqZ7jbeqGRnN2mi0oZ+QHAdcosykFeUuSD4BXmFV/7KLZmdIRByVr2B4BHajTcvtvCOrJzkL+0aTWhI2rfGBR/lboleFa2F2hW57i6GEfSqgjovQHevwZpoluzsLU6xqYmZnO0VQa27zI3vY01dRaaNcxH1iudbYEZhvRyK4rl+CqZEeQJGBZ724zK6+4jOGbIsPUXFE3xGX7m2xnHNm24tsB+PFUGG7EJjMCqnjfttz8xJbcQrlIMrBmpEvWJBvzvtyFsBLlmPad7tjyvx/0D8X8EVmAPZs/2l7/tLDhU3HrKR3Q9zn0F8kH9hkp1NnC1I4kHTVg7O3s31w0w/Tr6ZaNoEK1Sjzsb6B2lAVIpvAgAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ApigwHttpApiLambdaDynamodbPythonCdkStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "Endpoint8024A810": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "EndpointEEF1FD8F"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "EndpointDeploymentStageprodB78BEEA0"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
