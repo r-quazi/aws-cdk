@@ -72,6 +72,7 @@ At this point you can deploy the stack.
 Using the default profile
 
 ```
+$ cdk bootstrap
 $ cdk deploy
 ```
 
@@ -138,4 +139,3 @@ cdk destroy
  * `cdk diff`        compare deployed stack with current state
  * `cdk docs`        open CDK documentation
 
-Enjoy!
